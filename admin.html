@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaseoSeguro Admin</title>
+
+<style>
+body{
+font-family:Arial;
+max-width:600px;
+margin:auto;
+padding:20px;
+}
+
+input,textarea{
+width:100%;
+padding:10px;
+margin:10px 0;
+}
+
+button{
+background:#0b3d91;
+color:white;
+padding:12px;
+border:none;
+width:100%;
+cursor:pointer;
+}
+
+button:hover{
+background:#ff9800;
+}
+</style>
+
+</head>
+<body>
+
+<h1>PaseoSeguro Admin</h1>
+
+<input type="text" id="nombre" placeholder="Nombre">
+
+<input type="number" id="precio" placeholder="Precio">
+
+<textarea id="descripcion"
+placeholder="Descripción"></textarea>
+
+<input type="text"
+id="imagen"
+placeholder="URL Imagen ImgBB">
+
+
+<button onclick="guardarProducto()">
+Guardar Producto
+</button>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  addDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCJ_jmVAawc2vOCdW82lODsSHpDRD6XxI4",
+  authDomain: "paseoseguro-bcfbe.firebaseapp.com",
+  projectId: "paseoseguro-bcfbe",
+  storageBucket: "paseoseguro-bcfbe.firebasestorage.app",
+  messagingSenderId: "622801337004",
+  appId: "1:622801337004:web:eb47dbfb9b7967e03dbd09",
+  measurementId: "G-DWCK6N8M9Q"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.guardarProducto = async function(){
+
+  const nombre = document.getElementById("nombre").value;
+  const precio = Number(document.getElementById("precio").value);
+  const descripcion = document.getElementById("descripcion").value;
+  const imagen = document.getElementById("imagen").value;
+
+  try{
+
+    await addDoc(collection(db,"productos"),{
+      nombre,
+      precio,
+      descripcion,
+      imagen
+    });
+
+    alert("Producto guardado correctamente");
+
+    document.getElementById("nombre").value="";
+    document.getElementById("precio").value="";
+    document.getElementById("descripcion").value="";
+    document.getElementById("imagen").value="";
+
+  }
+  catch(error){
+
+    console.error(error);
+    alert("Error al guardar");
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
